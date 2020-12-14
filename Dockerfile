@@ -26,8 +26,15 @@ RUN cd /tmp/rocksdb &&  \
     cp -r include /usr/local/rocksdb/ && \
     cp -r include/* /usr/include/ 
 
-    
-ARG JAVA_VERSION=1.8.0
-RUN apk add openjdk11 --repository=http://dl-cdn.alpinelinux.org/alpine/edge/communityRUN 
+RUN apk update
+RUN apk add curl
+ENV DEBUG_LEVEL=0 
+
+RUN apk add openjdk11 
+
+ENV JAVA_HOME "/usr/lib/jvm/default-jvm"
+ENV PATH "$PATH:/usr/lib/jvm/default-jvm/bin"
 RUN cd /tmp/rocksdb && make jclean
-RUN rm -R /tmp/rocksdb/
+
+RUN cd /tmp/rocksdb && make -j 4 rocksdbjavastatic
+#RUN rm -R /tmp/rocksdb/
