@@ -25,4 +25,9 @@ RUN cd /tmp/rocksdb &&  \
     cp /usr/local/rocksdb/lib/librocksdb.so* /usr/lib/ && \
     cp -r include /usr/local/rocksdb/ && \
     cp -r include/* /usr/include/ 
+
+    
+ARG JAVA_VERSION=1.8.0
+RUN apk add openjdk11 --repository=http://dl-cdn.alpinelinux.org/alpine/edge/communityRUN 
+RUN cd /tmp/rocksdb && make jclean
 RUN rm -R /tmp/rocksdb/
