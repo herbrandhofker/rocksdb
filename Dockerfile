@@ -1,4 +1,4 @@
-FROM golang:1.14.4-alpine
+FROM alpine:latest
 LABEL maintainer "Herbrand Hofker <herbrand@kafka.academy>"
 ARG ROCKSDB_VERSION=6.14.6
 RUN echo "@testing http://nl.alpinelinux.org/alpine/edge/testing" >>/etc/apk/repositories
