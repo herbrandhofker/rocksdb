@@ -1,13 +1,13 @@
 FROM golang:1.14.4-alpine
 LABEL maintainer "Herbrand Hofker <herbrand@kafka.academy>"
-
+ARG ROCKSDB_VERSION=6.14.6
 RUN echo "@testing http://nl.alpinelinux.org/alpine/edge/testing" >>/etc/apk/repositories
 RUN apk add --update --no-cache build-base linux-headers git cmake bash perl #wget mercurial g++ autoconf libgflags-dev cmake bash
 RUN apk add --update --no-cache zlib zlib-dev bzip2 bzip2-dev snappy snappy-dev lz4 lz4-dev zstd@testing zstd-dev@testing libtbb-dev@testing libtbb@testing
 
 # installing latest gflags
 RUN cd /tmp && \
-    git clone https://github.com/gflags/gflags.git && \
+    git clone  https://github.com/gflags/gflags.git && \
     cd gflags && \
     mkdir build && \
     cd build && \
@@ -18,9 +18,8 @@ RUN cd /tmp && \
 
 # Install Rocksdb
 RUN cd /tmp && \
-    git clone https://github.com/facebook/rocksdb.git && \
+    git clone --branch "v${ROCKSDB_VERSION}"  --depth 1 https://github.com/facebook/rocksdb.git && \
     cd rocksdb && \
-    git checkout v6.14.6 && \
     make shared_lib && \
     mkdir -p /usr/local/rocksdb/lib && \
     mkdir /usr/local/rocksdb/include && \
