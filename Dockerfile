@@ -3,7 +3,7 @@ LABEL maintainer "Herbrand Hofker <herbrand@kafka.academy>"
 ARG ROCKSDB_VERSION=6.14.6
 RUN echo "@testing http://nl.alpinelinux.org/alpine/edge/testing" >>/etc/apk/repositories
 RUN apk add --update --no-cache build-base linux-headers git cmake bash perl #wget mercurial g++ autoconf libgflags-dev cmake bash
-RUN apk add --update --no-cache zlib zlib-dev bzip2 bzip2-dev snappy snappy-dev lz4 lz4-dev zstd@testing zstd-dev@testing libtbb-dev@testing libtbb@testing
+RUN apk add --update --no-cache curl zlib zlib-dev bzip2 bzip2-dev snappy snappy-dev lz4 lz4-dev zstd@testing zstd-dev@testing libtbb-dev@testing libtbb@testing
 
 # installing latest gflags
 RUN cd /tmp && \
@@ -27,14 +27,15 @@ RUN cd /tmp/rocksdb &&  \
     cp -r include/* /usr/include/ 
 
 RUN apk update
-RUN apk add curl
-ENV DEBUG_LEVEL=0 
+ENV DEBUG_LEVEL 0 
 
 RUN apk add openjdk11 
-
+RUN mkdir /rocksdb-build
 ENV JAVA_HOME "/usr/lib/jvm/default-jvm"
 ENV PATH "$PATH:/usr/lib/jvm/default-jvm/bin"
 RUN cd /tmp/rocksdb && make jclean
 
-RUN cd /tmp/rocksdb && make -j 4 rocksdbjavastatic
+RUN cd /tmp/rocksdb && make -j8 rocksdbjavastatic
+RUN cp /tmp/rocksdb/java/target/librocksdbjni-* /rocksdb-build
+RUN cp /tmp/rocksdb/java/target/rocksdbjni-* /rocksdb-build
 #RUN rm -R /tmp/rocksdb/
