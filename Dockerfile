@@ -17,14 +17,12 @@ RUN cd /tmp && \
     rm -R /tmp/gflags/
 
 # Install Rocksdb
-RUN cd /tmp && \
-    git clone --branch "v${ROCKSDB_VERSION}"  --depth 1 https://github.com/facebook/rocksdb.git && \
-    cd rocksdb && \
-    make shared_lib && \
-    mkdir -p /usr/local/rocksdb/lib && \
-    mkdir /usr/local/rocksdb/include && \
+RUN cd /tmp &&  git clone --branch "v${ROCKSDB_VERSION}"  --depth 1 https://github.com/facebook/rocksdb.git 
+RUN cd /tmp/rocksdb && make shared_lib
+RUN mkdir -p /usr/local/rocksdb/lib &&  mkdir /usr/local/rocksdb/include 
+RUN cd /tmp/rocksdb &&  \
     cp librocksdb.so* /usr/local/rocksdb/lib && \
     cp /usr/local/rocksdb/lib/librocksdb.so* /usr/lib/ && \
     cp -r include /usr/local/rocksdb/ && \
-    cp -r include/* /usr/include/ && \
-    rm -R /tmp/rocksdb/
+    cp -r include/* /usr/include/ 
+RUN rm -R /tmp/rocksdb/
