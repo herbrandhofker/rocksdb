@@ -1,5 +1,5 @@
 FROM golang:1.14.4-alpine
-MAINTAINER unoexperto <unoexperto.support@mailnull.com>
+LABEL maintainer "Herbrand Hofker <herbrand@kafka.academy>"
 
 RUN echo "@testing http://nl.alpinelinux.org/alpine/edge/testing" >>/etc/apk/repositories
 RUN apk add --update --no-cache build-base linux-headers git cmake bash perl #wget mercurial g++ autoconf libgflags-dev cmake bash
